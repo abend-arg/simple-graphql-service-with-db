@@ -1,15 +1,16 @@
 from domain import Construct, Sequence
 from sqlalchemy import Select, select
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from persistence.models import ConstructModel, SequenceModel
 
 
 class ConstructDatastore:
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    def find_by_sequence(
+    async def find_by_sequence(
         self,
         gene_name: str,
         min_length: int | None = None,
@@ -26,7 +27,8 @@ class ConstructDatastore:
             stmt = stmt.where(SequenceModel.length >= min_length)
 
         stmt = stmt.distinct().order_by(ConstructModel.id)
-        return [self._to_domain(model) for model in self._session.scalars(stmt)]
+        result = await self._session.scalars(stmt)
+        return [self._to_domain(model) for model in result]
 
     @staticmethod
     def _to_domain(model: ConstructModel) -> Construct:
