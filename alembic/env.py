@@ -5,6 +5,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from persistence.database_url import get_sync_database_url
 from persistence.models import Base
 
 # Import models so they are registered on Base.metadata before autogenerate runs.
@@ -14,8 +15,8 @@ from persistence.models import entities  # noqa: F401
 # access to the values within the .ini file in use.
 config = context.config
 
-database_url = os.getenv("DATABASE_URL", "sqlite:///./app.db")
-config.set_main_option("sqlalchemy.url", database_url)
+os.environ["DATABASE_URL"] = get_sync_database_url()
+config.set_main_option("sqlalchemy.url", get_sync_database_url())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
