@@ -1,5 +1,5 @@
 """Domain layer package."""
 
-from domain.construct import Construct, Sequence
+from domain.construct import Construct, ConstructSequenceFilter, Sequence
 
-__all__ = ["Construct", "Sequence"]
+__all__ = ["Construct", "ConstructSequenceFilter", "Sequence"]

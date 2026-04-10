@@ -11,6 +11,12 @@ class Sequence:
 
 
 @dataclass(frozen=True)
+class ConstructSequenceFilter:
+    gene_name: str
+    min_length: int | None = None
+
+
+@dataclass(frozen=True)
 class Construct:
     id: int
     name: str
