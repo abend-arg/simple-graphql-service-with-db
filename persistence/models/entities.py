@@ -22,7 +22,7 @@ class SequenceModel(Base):
     __tablename__ = "sequences"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    gene_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    gene_name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     length: Mapped[int] = mapped_column(Integer, nullable=False)
     construct_id: Mapped[int] = mapped_column(
         ForeignKey("constructs.id", ondelete="CASCADE"),
@@ -30,4 +30,3 @@ class SequenceModel(Base):
     )
 
     construct: Mapped[ConstructModel] = relationship(back_populates="sequences")
-
