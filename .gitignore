@@ -208,3 +208,4 @@ __marimo__/
 
 # Jetbrains
 .idea/
+app.db

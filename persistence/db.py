@@ -4,8 +4,6 @@ from collections.abc import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from persistence.models import Base
-
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
 
 engine_kwargs: dict[str, object] = {}
@@ -16,11 +14,6 @@ engine = create_engine(DATABASE_URL, **engine_kwargs)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
 
 
-def init_db() -> None:
-    Base.metadata.create_all(bind=engine)
-
-
 def get_db_session() -> Generator[Session, None, None]:
     with SessionLocal() as session:
         yield session
-
