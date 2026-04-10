@@ -8,6 +8,7 @@ from presentation.graphql.types import Construct
 
 class GraphQLContext(BaseContext):
     def __init__(self, construct_service: ConstructService) -> None:
+        super().__init__()
         self.construct_service = construct_service
 
 
