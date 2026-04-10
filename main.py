@@ -1,13 +1,10 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-from strawberry.fastapi import GraphQLRouter
+from fastapi import APIRouter, FastAPI
 
 from persistence.db import init_db
-from presentation.dependencies import get_graphql_context
-from presentation.graphql import schema
+from presentation import create_router
 
 
 @asynccontextmanager
@@ -16,23 +13,14 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     yield
 
 
-def create_app() -> FastAPI:
+def create_app(router: APIRouter) -> FastAPI:
     app = FastAPI(title="Simple GraphQL Service", lifespan=lifespan)
-
-    graphql_router = GraphQLRouter(
-        schema=schema,
-        context_getter=get_graphql_context,
-    )
-    app.include_router(graphql_router, prefix="/graphql")
-
-    @app.get("/health")
-    def healthcheck() -> dict[str, str]:
-        return {"status": "ok"}
-
+    app.include_router(router)
     return app
 
 
-app = create_app()
+router = create_router()
+app = create_app(router)
 
 
 if __name__ == "__main__":
