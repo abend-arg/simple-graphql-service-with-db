@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import strawberry
 
-from persistence.models import ConstructModel, SequenceModel
+from domain import Construct as ConstructDTO
+from domain import Sequence as SequenceDTO
 
 
 @strawberry.type
@@ -12,7 +13,7 @@ class Sequence:
     length: int
 
     @classmethod
-    def from_model(cls, model: SequenceModel) -> "Sequence":
+    def from_domain(cls, model: SequenceDTO) -> "Sequence":
         return cls(
             id=model.id,
             gene_name=model.gene_name,
@@ -27,10 +28,9 @@ class Construct:
     sequences: list[Sequence]
 
     @classmethod
-    def from_model(cls, model: ConstructModel) -> "Construct":
+    def from_domain(cls, model: ConstructDTO) -> "Construct":
         return cls(
             id=model.id,
             name=model.name,
-            sequences=[Sequence.from_model(sequence) for sequence in model.sequences],
+            sequences=[Sequence.from_domain(sequence) for sequence in model.sequences],
         )
-

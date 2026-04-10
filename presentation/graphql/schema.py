@@ -21,11 +21,11 @@ class Query:
         gene_name: str,
         min_length: int | None = None,
     ) -> list[Construct]:
-        models = info.context.construct_service.list_constructs_by_sequence(
+        constructs = info.context.construct_service.list_constructs_by_sequence(
             gene_name=gene_name,
             min_length=min_length,
         )
-        return [Construct.from_model(model) for model in models]
+        return [Construct.from_domain(construct) for construct in constructs]
 
 
 schema = strawberry.Schema(query=Query)
