@@ -15,13 +15,13 @@ class GraphQLContext(BaseContext):
 @strawberry.type
 class Query:
     @strawberry.field
-    def constructs_by_sequence(
+    async def constructs_by_sequence(
         self,
         info: Info[GraphQLContext, None],
         gene_name: str,
         min_length: int | None = None,
     ) -> list[Construct]:
-        constructs = info.context.construct_service.list_constructs_by_sequence(
+        constructs = await info.context.construct_service.list_constructs_by_sequence(
             gene_name=gene_name,
             min_length=min_length,
         )
