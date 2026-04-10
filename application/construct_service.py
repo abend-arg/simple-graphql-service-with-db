@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from persistence.models import ConstructModel
+from domain import Construct
 
 
 class ConstructDatastorePort(Protocol):
@@ -8,7 +8,7 @@ class ConstructDatastorePort(Protocol):
         self,
         gene_name: str,
         min_length: int | None = None,
-    ) -> list[ConstructModel]:
+    ) -> list[Construct]:
         ...
 
 
@@ -20,9 +20,8 @@ class ConstructService:
         self,
         gene_name: str,
         min_length: int | None = None,
-    ) -> list[ConstructModel]:
+    ) -> list[Construct]:
         return self._datastore.find_by_sequence(
             gene_name=gene_name,
             min_length=min_length,
         )
-
