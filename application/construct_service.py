@@ -1,14 +1,10 @@
 from typing import Protocol
 
-from domain import Construct
+from domain import Construct, ConstructSequenceFilter
 
 
 class ConstructDatastorePort(Protocol):
-    async def find_by_sequence(
-        self,
-        gene_name: str,
-        min_length: int | None = None,
-    ) -> list[Construct]:
+    async def find_by_sequence(self, filters: ConstructSequenceFilter) -> list[Construct]:
         ...
 
 
@@ -18,10 +14,6 @@ class ConstructService:
 
     async def list_constructs_by_sequence(
         self,
-        gene_name: str,
-        min_length: int | None = None,
+        filters: ConstructSequenceFilter,
     ) -> list[Construct]:
-        return await self._datastore.find_by_sequence(
-            gene_name=gene_name,
-            min_length=min_length,
-        )
+        return await self._datastore.find_by_sequence(filters)
