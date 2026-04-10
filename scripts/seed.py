@@ -1,12 +1,14 @@
+import asyncio
+
 from sqlalchemy import select
 
 from persistence.db import SessionLocal
 from persistence.models import ConstructModel, SequenceModel
 
 
-def seed() -> None:
-    with SessionLocal() as session:
-        existing_names = set(session.scalars(select(ConstructModel.name)).all())
+async def seed() -> None:
+    async with SessionLocal() as session:
+        existing_names = set((await session.scalars(select(ConstructModel.name))).all())
         constructs = [
             ConstructModel(
                 name="BRCA1 Panel",
@@ -37,8 +39,8 @@ def seed() -> None:
             return
 
         session.add_all(records_to_insert)
-        session.commit()
+        await session.commit()
 
 
 if __name__ == "__main__":
-    seed()
+    asyncio.run(seed())
